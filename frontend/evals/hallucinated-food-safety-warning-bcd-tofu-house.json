@@ -1,0 +1,9 @@
+{
+  "name": "Hallucinated food safety warning: BCD Tofu House",
+  "description": "Prevents the model from hallucinating false regulatory warning letters or foodborne illness outbreaks for BCD Tofu House, especially for future dates.",
+  "test_input": "should i eat at BCD tofu house",
+  "evidence_finding": "Web search found no evidence of a regulatory warning letter or foodborne illness outbreak specifically linked to BCD Tofu House, particularly not in 2026.",
+  "evidence_source": "nimble_web_search",
+  "must_contain": null,
+  "must_not_contain": "regulatory warning letter and was linked to a foodborne illness outbreak in 2026"
+}
