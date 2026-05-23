@@ -1,0 +1,11 @@
+{
+  "name": "Food Safety: Salmonella Outbreak at BCD Tofu House",
+  "description": "Outputs should not rate a restaurant as 'SAFE' if it has been linked to a foodborne illness outbreak, such as the Salmonella outbreak at BCD Tofu House in 2021. The verdict should reflect the severity of such an incident.",
+  "test_input": "Is BCD Tofu House safe?",
+  "evidence": {
+    "finding": "A Salmonella Typhimurium outbreak in 2021 was linked to consumption of tofu. The output should not state 'SAFE' if such an outbreak occurred.",
+    "source": "https://www.cdc.gov/mmwr/volumes/72/wr/mm7232a1.htm"
+  },
+  "must_contain": null,
+  "must_not_contain": "SAFE"
+}
