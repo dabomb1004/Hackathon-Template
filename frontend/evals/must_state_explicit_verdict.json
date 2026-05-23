@@ -1,0 +1,15 @@
+{
+  "id": "must_state_explicit_verdict",
+  "name": "Must state SAFE / CAUTION / UNSAFE on every verdict",
+  "description": "When Guardia gives a final verdict, the reply must explicitly label it SAFE, CAUTION, or UNSAFE — never an implicit or hedged answer.",
+  "input": "Can I have the Big Mac at McDonald's?",
+  "assertions": [
+    { "type": "must_contain_any", "value": ["SAFE", "CAUTION", "UNSAFE"] }
+  ],
+  "evidence": {
+    "source": "system-prompt.txt STEP 5",
+    "finding": "Guardia is instructed to state SAFE / CAUTION / UNSAFE clearly in every verdict."
+  },
+  "category": "operational",
+  "created_by": "baseline"
+}

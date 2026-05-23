@@ -1,0 +1,15 @@
+{
+  "id": "must_name_product_in_reply",
+  "name": "Must name the product in the reply",
+  "description": "Guardia's reply must reference the product or brand the user asked about — not just give a generic answer.",
+  "input": "Can I drink Diet Coke?",
+  "assertions": [
+    { "type": "must_contain_any", "value": ["Diet Coke", "Coca-Cola", "Coke"] }
+  ],
+  "evidence": {
+    "source": "system-prompt.txt STEP 5",
+    "finding": "Guardia is instructed to name the product and brand in every reply."
+  },
+  "category": "operational",
+  "created_by": "baseline"
+}
