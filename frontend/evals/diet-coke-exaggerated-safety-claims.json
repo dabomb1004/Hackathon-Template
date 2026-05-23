@@ -1,0 +1,11 @@
+{
+  "description": "Prevent exaggerated and alarmist claims about product safety based on isolated incidents or unverified general statements, especially regarding recalls, contamination, or regulatory warnings. Ensure nuance in health advice.",
+  "evidence": {
+    "finding": "Web search revealed isolated incidents of recalls and warnings for Diet Coke (e.g., specific contamination in certain regions/batches), but not widespread, ongoing contamination or general 'UNSAFE' status for the entire brand. The claims regarding aspartame and caffeine interactions, while having some basis, were presented without sufficient nuance to justify an 'UNSAFE' verdict.",
+    "source": "nimble_web_search results for 'Diet Coke recalls warnings contamination safety issues', 'aspartame Type 2 diabetes safety', and 'caffeine warfarin interaction'"
+  },
+  "must_contain": null,
+  "must_not_contain": "UNSAFE|pathogen contamination reports|regulatory warning letters associated with the brand, indicating potential safety risks|official product recalls|widespread contamination",
+  "name": "Diet Coke: Exaggerated Safety Claims",
+  "test_input": "Can you tell me about Diet Coke?"
+}
