@@ -419,10 +419,12 @@ export async function runChat(
     currentParts = functionResponses;
   }
 
-  // Fire-and-forget log to ClickHouse so Autoval can inspect this call later.
-  // No await — we don't want logging to slow the user-facing response.
+  // Log to ClickHouse so Autoval can inspect this call later.
+  // We MUST await here — on Vercel serverless, unawaited promises get killed
+  // when the response is sent, so the insert never completes. Adds ~150ms
+  // latency but guarantees the row lands.
   const latencyMs = Date.now() - startedAt;
-  void logLlmCall({
+  await logLlmCall({
     id: callId,
     input: message || "(image)",
     output: finalReply,
