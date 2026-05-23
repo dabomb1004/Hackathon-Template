@@ -1,0 +1,11 @@
+{
+  "description": "Prevents the LLM from hallucinating future negative events, especially foodborne illness outbreaks or regulatory warnings related to restaurants.",
+  "evidence": {
+    "finding": "Web search for \"BCD Tofu House foodborne illness outbreak regulatory warning\" yielded no credible results of any past or present outbreaks or warnings specifically for BCD Tofu House, and definitely not for 2026, which is in the future. The LLM hallucinated these events.",
+    "source": "nimble_web_search"
+  },
+  "must_contain": null,
+  "must_not_contain": "2026",
+  "name": "No Future Hallucinations: Food Safety",
+  "test_input": "should i eat at BCD tofu house"
+}
