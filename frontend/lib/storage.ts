@@ -13,7 +13,16 @@ function readProfile(): Record<string, unknown> {
 }
 
 function writeProfile(data: Record<string, unknown>): void {
-  fs.writeFileSync(LOCAL_PATH, JSON.stringify(data, null, 2));
+  // On Vercel serverless /var/task is read-only — silently skip writes there.
+  // For the demo the profile is pre-baked at deploy time, so in-conversation
+  // memory updates just don't persist between requests. Local dev still works.
+  try {
+    fs.writeFileSync(LOCAL_PATH, JSON.stringify(data, null, 2));
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException)?.code !== "EROFS") {
+      console.warn("[storage] writeProfile failed (non-EROFS):", err);
+    }
+  }
 }
 
 export async function getUser(): Promise<Record<string, unknown>> {
