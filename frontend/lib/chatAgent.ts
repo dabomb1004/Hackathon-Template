@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import {
   GoogleGenerativeAI,
   FunctionDeclaration,
@@ -8,14 +10,27 @@ import {
 } from "@google/generative-ai";
 import { getUser, saveUserMemory } from "./storage";
 import { validateBrand } from "./brandValidator";
+import { logLlmCall, newCallId } from "./clickhouseLogger";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 // ---------------------------------------------------------------------------
-// System prompt
+// System prompt — loaded from frontend/prompts/system-prompt.txt so Autoval
+// (the eval agent) can PR-update Guardia's behavior by modifying the file.
+// Fallback to an inline default if the file is missing.
 // ---------------------------------------------------------------------------
 
-const BASE_SYSTEM_PROMPT = `You are Guardia, a trusted consumer safety agent. Your job is to protect users from unsafe, fake, or harmful products and flag anything that conflicts with their personal health profile.
+const SYSTEM_PROMPT_PATH = path.join(process.cwd(), "prompts", "system-prompt.txt");
+
+function loadBaseSystemPrompt(): string {
+  try {
+    return fs.readFileSync(SYSTEM_PROMPT_PATH, "utf-8").trim();
+  } catch {
+    return FALLBACK_SYSTEM_PROMPT;
+  }
+}
+
+const FALLBACK_SYSTEM_PROMPT = `You are Guardia, a trusted consumer safety agent. Your job is to protect users from unsafe, fake, or harmful products and flag anything that conflicts with their personal health profile.
 
 You handle ANY branded product or venue, including:
 - Packaged food & beverages (snacks, drinks, supplements, vitamins)
@@ -149,8 +164,9 @@ function buildSystemWithProfile(profile: Record<string, unknown>): string {
       parts.push(`${k}: ${Array.isArray(v) ? v.join(", ") : String(v)}`);
   }
 
-  if (parts.length === 0) return BASE_SYSTEM_PROMPT;
-  return BASE_SYSTEM_PROMPT + "\n\n--- User Health Profile ---\n" + parts.join("\n");
+  const base = loadBaseSystemPrompt();
+  if (parts.length === 0) return base;
+  return base + "\n\n--- User Health Profile ---\n" + parts.join("\n");
 }
 
 // ---------------------------------------------------------------------------
@@ -275,7 +291,10 @@ export interface ChatResult {
   reply: string;
   validation: ValidationResult | null;
   askedQuestion: boolean;
+  logId?: string;
 }
+
+const MODEL_NAME = "gemini-2.5-flash";
 
 // ---------------------------------------------------------------------------
 // Main export
@@ -289,9 +308,11 @@ export async function runChat(
   imageMediaType?: string
 ): Promise<ChatResult> {
   const systemInstruction = buildSystemWithProfile(userProfile);
+  const callId = newCallId();
+  const startedAt = Date.now();
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+    model: MODEL_NAME,
     systemInstruction,
     tools: [{ functionDeclarations: tools }],
     // Force it to use tools (it must call format_response to finish)
@@ -398,9 +419,21 @@ export async function runChat(
     currentParts = functionResponses;
   }
 
+  // Fire-and-forget log to ClickHouse so Autoval can inspect this call later.
+  // No await — we don't want logging to slow the user-facing response.
+  const latencyMs = Date.now() - startedAt;
+  void logLlmCall({
+    id: callId,
+    input: message || "(image)",
+    output: finalReply,
+    model: MODEL_NAME,
+    latency_ms: latencyMs,
+  });
+
   return {
     reply: finalReply,
     validation: finalValidation,
     askedQuestion: finalValidation === null,
+    logId: callId,
   };
 }
