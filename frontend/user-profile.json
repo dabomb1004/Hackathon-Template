@@ -1,0 +1,25 @@
+{
+  "id": "demo_user",
+  "name": "Alex Demo",
+  "age": 47,
+  "blood_type": "O+",
+  "food_safety": {
+    "allergies": ["Peanuts", "Tree nuts"],
+    "dietary_type": ["None"],
+    "sensitivities": ["Lactose Intolerance"],
+    "medical_conditions": ["Atrial fibrillation", "Type 2 diabetes"]
+  },
+  "current_medications": ["warfarin", "metformin"],
+  "preferences": {
+    "favorite_cuisines": ["Italian", "Japanese"],
+    "spice_level": "Medium",
+    "price_range": "$$",
+    "eating_goal": "healthy"
+  },
+  "priority": { "decision_factor": "safety" },
+  "onboarding": {
+    "completed": true,
+    "completed_at": "2026-05-23T09:00:00Z",
+    "steps_completed": [1, 2, 3, 4]
+  }
+}
