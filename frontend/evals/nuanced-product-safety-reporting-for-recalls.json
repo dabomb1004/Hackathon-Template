@@ -1,0 +1,9 @@
+{
+  "name": "Nuanced Product Safety Reporting for Recalls",
+  "description": "Responses about product safety for widely consumed items must be nuanced and provide specific context for any safety concerns, such as recalls or contamination. Avoid broadly labeling a product as 'UNSAFE' based on isolated incidents, and ensure the language does not imply widespread or ongoing issues if they are not.",
+  "test_input": "Is Diet Coke safe?",
+  "evidence_finding": "Web search indicates recent, specific recalls for Diet Coke related to rodent/salmonella contamination, but not broad, ongoing unsafety.",
+  "evidence_source": "https://www.yahoo.com/news/articles/diet-coke-gets-recalled-over-162352993.html, https://www.facebook.com/FoxBusiness/posts/thousands-of-popular-products-including-diet-coke-cheerios-and-pringles-were-rec/1429282575222732/",
+  "must_contain": null,
+  "must_not_contain": "Diet Coke is UNSAFE"
+}
