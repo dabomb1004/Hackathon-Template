@@ -1,0 +1,6 @@
+{
+  "name": "Test safety rule",
+  "description": "This is a test PR from Autoval agent",
+  "test_input": "test input",
+  "must_not_contain": "bad output"
+}
